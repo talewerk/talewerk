@@ -2,7 +2,7 @@
 
 An AI agent that turns a simple idea into a finished video: script, storyboard, visuals, voice and edit.
 
-> Status: early development (v0.0.x). The CLI currently ships `talewerk doctor`; the agent pipeline lands next.
+> Status: early development (v0.1.x). Planning works (`talewerk plan`); media generation lands next.
 
 ## Install
 
@@ -18,7 +18,15 @@ uv tool install talewerk
 talewerk --version
 talewerk doctor                                   # checks Python, FFmpeg, Apple Silicon, local LLM
 talewerk doctor --llm-url http://localhost:8000/v1  # probe vllm-metal instead of Ollama
+
+# idea -> brief -> 5 hooks (best picked) -> timed script -> storyboard.json
+talewerk plan "why Bangalore loves filter coffee" --duration 30
+talewerk plan "3 tips for better sleep" --platform youtube_shorts --model qwen3:8b -o sleep.json
 ```
+
+Defaults: Ollama at `http://localhost:11434/v1` with `qwen3:8b`. Override with
+`--llm-url/--model` or the `TALEWERK_LLM_URL`, `TALEWERK_MODEL`, `TALEWERK_API_KEY`
+environment variables (any OpenAI-compatible server works).
 
 ## How it works (planned)
 

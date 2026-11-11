@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "talewerk"
-version = "0.0.1"
+version = "0.1.0"
 description = "An AI agent that turns a simple idea into a finished video: script, storyboard, visuals, voice and edit."
 readme = "README.md"
 license = "MIT"
@@ -24,7 +24,11 @@ classifiers = [
     "Topic :: Multimedia :: Video",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-dependencies = []
+dependencies = [
+    "langgraph>=0.6",
+    "openai>=1.40",
+    "pydantic>=2.7",
+]
 
 [project.urls]
 Homepage = "https://github.com/talewerk/talewerk"

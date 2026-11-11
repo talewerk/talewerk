@@ -1,0 +1,119 @@
+{
+  "brief": {
+    "idea": "why Bangalore loves filter coffee",
+    "platform": "instagram",
+    "aspect_ratio": "9:16",
+    "duration_s": 30,
+    "audience": "young professionals and locals in Bangalore familiar with coffee culture",
+    "tone": "warm and nostalgic, highlighting tradition and daily rituals",
+    "call_to_action": "Share your favorite filter coffee moment with #BangaloreCoffeeLegacy"
+  },
+  "hooks": [
+    {
+      "hook": "Bangalore’s secret ritual: 5 AM filter coffee that wakes the city.",
+      "angle": "Bold claim",
+      "score": 9
+    },
+    {
+      "hook": "Why does Bangalore start its day with filter coffee? The answer is in every sip.",
+      "angle": "Question",
+      "score": 8
+    },
+    {
+      "hook": "Every Bangalore morning begins with the hum of a filter coffee maker.",
+      "angle": "Relatable moment",
+      "score": 8
+    },
+    {
+      "hook": "From steam to streets: how filter coffee fuels Bangalore.",
+      "angle": "Visual reveal",
+      "score": 9
+    },
+    {
+      "hook": "Filter coffee isn’t just a drink—it’s Bangalore’s heartbeat.",
+      "angle": "Surprise",
+      "score": 10
+    }
+  ],
+  "script": {
+    "title": "Why Bangalore Loves Filter Coffee",
+    "beats": [
+      {
+        "vo_line": "Filter coffee isn’t just a drink—it’s Bangalore’s heartbeat.",
+        "overlay_text": "",
+        "duration_s": 5.0
+      },
+      {
+        "vo_line": "Morning rituals start with a brew.",
+        "overlay_text": "Morning rituals start with a brew",
+        "duration_s": 6.0
+      },
+      {
+        "vo_line": "Steaming mugs and stories passed down through generations.",
+        "overlay_text": "Old-world charm",
+        "duration_s": 6.0
+      },
+      {
+        "vo_line": "A cup connects neighborhoods, one sip at a time.",
+        "overlay_text": "Shared moments",
+        "duration_s": 6.0
+      },
+      {
+        "vo_line": "Share your favorite filter coffee moment with #BangaloreCoffeeLegacy",
+        "overlay_text": "#BangaloreCoffeeLegacy",
+        "duration_s": 7.0
+      }
+    ]
+  },
+  "storyboard": {
+    "title": "Why Bangalore Loves Filter Coffee",
+    "hook": "Filter coffee isn’t just a drink—it’s Bangalore’s heartbeat.",
+    "shots": [
+      {
+        "id": 1,
+        "duration_s": 5.0,
+        "shot_type": "image_motion",
+        "visual_prompt": "Close-up of a traditional filter coffee setup with steam rising, warm golden-hour lighting, realistic style",
+        "camera": "static then slow push-in",
+        "overlay_text": "",
+        "vo_line": "Filter coffee isn’t just a drink—it’s Bangalore’s heartbeat."
+      },
+      {
+        "id": 2,
+        "duration_s": 6.0,
+        "shot_type": "image_motion",
+        "visual_prompt": "Person preparing coffee in a home kitchen with a vintage filter coffee maker, soft focus on steam rising, warm tones",
+        "camera": "pan left",
+        "overlay_text": "Morning rituals start with a brew",
+        "vo_line": "Morning rituals start with a brew."
+      },
+      {
+        "id": 3,
+        "duration_s": 6.0,
+        "shot_type": "image_motion",
+        "visual_prompt": "Family sharing coffee in a cozy home with old-world decor, warm lighting highlighting steaming mugs",
+        "camera": "slow zoom out",
+        "overlay_text": "Old-world charm",
+        "vo_line": "Steaming mugs and stories passed down through generations."
+      },
+      {
+        "id": 4,
+        "duration_s": 6.0,
+        "shot_type": "image_motion",
+        "visual_prompt": "Montage of Bangalore locals sipping coffee at street vendors, cafes, and homes with warm sunlight",
+        "camera": "pan between scenes",
+        "overlay_text": "Shared moments",
+        "vo_line": "A cup connects neighborhoods, one sip at a time."
+      },
+      {
+        "id": 5,
+        "duration_s": 7.0,
+        "shot_type": "image_motion",
+        "visual_prompt": "Person holding a steaming mug with #BangaloreCoffeeLegacy overlay text, warm lighting emphasizing the hashtag",
+        "camera": "slow push-in to hashtag",
+        "overlay_text": "#BangaloreCoffeeLegacy",
+        "vo_line": "Share your favorite filter coffee moment with #BangaloreCoffeeLegacy"
+      }
+    ]
+  }
+}
