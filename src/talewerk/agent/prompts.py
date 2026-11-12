@@ -22,7 +22,8 @@ CONCEPT = """Brief:
 Write {n} different opening hooks for this video. Each hook is what the viewer sees
 and hears in the first 1-3 seconds and must stop them scrolling. Use different
 angles (surprise, question, bold claim, relatable moment, visual reveal...).
-Each hook must name something concrete and specific to this idea."""
+Each hook must name something concrete and specific to this idea.
+Each hook is at most 12 words."""
 
 JUDGE_SYSTEM = (
     "You are a strict social media editor. You did not write these hooks. "
@@ -61,7 +62,8 @@ Rules for visual_prompt (it goes to an image model that makes ONE still picture)
   If a beat needs several scenes, make several shots.
 - Concrete and specific: real objects, place, light, style, framing.
   Prefer local, authentic details over generic ones.
-- NO text, letters, logos or hashtags in the picture. Put any words in overlay_text.
+- NO text in the picture: no signs with words, labels, logos, slogans, hashtags
+  or quoted words. Put any words in overlay_text.
 
 Rules for overlay_text (short on-screen words, many viewers watch muted):
 - Required on the first shot (the hook) and the last shot (the call to action).

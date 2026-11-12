@@ -89,6 +89,10 @@ def test_storyboard_rejects_bad_ids_and_too_many_gen_video():
     "a cup with #BangaloreCoffee written on it",
     "split-screen of morning and night",
     "mug with caption below",
+    "steel pot labeled 'Kaveri Coffee' in faded paint",
+    "paper bag with a coffee shop logo",
+    "shop with a sign that reads Coffee Lab",
+    "a mug with a \u2018Coffee for Thought\u2019 slogan",
 ])
 def test_storyboard_rejects_montage_and_text_in_picture(prompt):
     with pytest.raises(ValueError, match="ONE subject"):
@@ -166,3 +170,15 @@ def test_inline_refs_removes_all_refs():
     flat = json.dumps(inline_refs(Storyboard.model_json_schema()))
     assert "$ref" not in flat and "$defs" not in flat
     assert "visual_prompt" in flat
+
+
+def test_apostrophes_are_not_treated_as_quoted_text():
+    ok = "the grinder's handle turning in a woman's hands, Bengaluru's skyline behind"
+    Storyboard.model_validate(shots([5, 5, 5], prompts={1: ok}))
+
+
+def test_hook_longer_than_12_words_is_rejected():
+    from talewerk.schemas import Hook
+
+    with pytest.raises(ValueError, match="at most 12"):
+        Hook(hook=" ".join(["word"] * 13), angle="a")

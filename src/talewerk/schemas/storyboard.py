@@ -10,10 +10,13 @@ import re
 from enum import Enum
 from typing import Literal
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 Platform = Literal["instagram", "youtube_shorts", "tiktok", "youtube"]
 AspectRatio = Literal["9:16", "16:9", "1:1"]
+
+
+MAX_HOOK_WORDS = 12
 
 
 class Brief(BaseModel):
@@ -40,8 +43,16 @@ class BriefDraft(BaseModel):
 class Hook(BaseModel):
     """Phase 2: one candidate opening (first 1-3 seconds)."""
 
-    hook: str = Field(description="The opening line or visual moment")
+    hook: str = Field(description="The opening line, at most 12 words (1-3 seconds spoken)")
     angle: str = Field(description="The creative angle behind it")
+
+    @field_validator("hook")
+    @classmethod
+    def _short(cls, v: str) -> str:
+        n = len(v.split())
+        if n > MAX_HOOK_WORDS:
+            raise ValueError(f"hook has {n} words; at most {MAX_HOOK_WORDS} (1-3 seconds spoken)")
+        return v
 
 
 class HookList(BaseModel):
@@ -96,7 +107,11 @@ class Shot(BaseModel):
 # Words that make an image model fail: many scenes in one picture, or text in the
 # picture (image models garble letters; text belongs in overlay_text).
 _BANNED_VISUAL = re.compile(
-    r"\b(montage|collage|split[- ]screen|overlay|caption|hashtag|text that reads)\b|#\w",
+    r"\b(montage|collage|split[- ]screen|overlay|caption|hashtag|logo|slogan|lettering"
+    r"|label+ed|written|that reads|that says|reading)\b"
+    r"|#\w"
+    # quoted words, e.g. a sign saying 'Coffee Lab' (apostrophes inside words are fine)
+    r"|(?<!\w)['\"\u2018\u201c]\w[^'\"\u2019\u201d]*['\"\u2019\u201d](?!\w)",
     re.IGNORECASE,
 )
 

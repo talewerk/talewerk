@@ -4,71 +4,71 @@
     "platform": "instagram",
     "aspect_ratio": "9:16",
     "duration_s": 30,
-    "audience": "Young professionals and students in Bangalore who drink filter coffee daily",
-    "tone": "warm and nostalgic",
-    "call_to_action": "Tag your favorite coffee spot and let’s brew some memories"
+    "audience": "Young professionals and expats in Bangalore who drink filter coffee daily",
+    "tone": "playful and authentic",
+    "call_to_action": "Tag your favorite filter coffee spot and let’s brew this city’s secret"
   },
   "hooks": [
     {
-      "hook": "A steamy cup of filter coffee steams in a 1970s-style brass pot on a wooden table in a bustling Jaya Nagar morning.",
-      "angle": "visual reveal"
-    },
-    {
-      "hook": "Why do you always order the same coffee at your favorite spot, even when it's 30 degrees outside?",
-      "angle": "question"
-    },
-    {
-      "hook": "This tiny shop in Indiranagar has been serving the same filter coffee for 30 years—no Wi-Fi, just warmth.",
+      "hook": "This coffee isn’t brewed—it’s ritual.",
       "angle": "bold claim"
     },
     {
-      "hook": "You wake up, walk 10 minutes, and the first thing you do is pour yourself a cup of filter coffee. Why?",
-      "angle": "relatable moment"
+      "hook": "You’ve had filter coffee. Now meet its 1970s ancestor in Koramangala.",
+      "angle": "specific moment"
     },
     {
-      "hook": "A close-up of coffee grounds being poured into a filter, the scent filling the air of a quiet class in Koramangala.",
-      "angle": "surprise"
+      "hook": "Why do Bangaloreites start their day with this?",
+      "angle": "question"
+    },
+    {
+      "hook": "Filter coffee is how Bangalore wakes up.",
+      "angle": "visual reveal"
+    },
+    {
+      "hook": "This isn’t just coffee—it’s the city’s morning rhythm.",
+      "angle": "relatable moment"
     }
   ],
   "chosen_hook": {
-    "hook": "You wake up, walk 10 minutes, and the first thing you do is pour yourself a cup of filter coffee. Why?",
-    "reason": "It creates a relatable, everyday moment that resonates with the target audience's routine, making the hook feel personal and authentic."
+    "hook": "Filter coffee is how Bangalore wakes up.",
+    "reason": "It creates a vivid, relatable image of filter coffee as a daily ritual that encapsulates Bangalore’s culture in a way that feels authentic and specific to the audience."
   },
   "script": {
     "title": "Why Bangalore Loves Filter Coffee",
     "beats": [
       {
-        "vo_line": "You wake up, walk 10 minutes, and the first thing you do is pour yourself a cup of filter coffee. Why?",
+        "vo_line": "Filter coffee is how Bangalore wakes up.",
         "overlay_text": "",
-        "duration_s": 5.0
+        "duration_s": 4.0
       },
       {
-        "vo_line": "It's not just coffee—it's a ritual.",
+        "vo_line": "It’s the first thing you order at 7 a.m.",
         "overlay_text": "",
         "duration_s": 3.0
       },
       {
-        "vo_line": "Mornings start with the clink of a steel pot and the hum of a coffee grinder.",
+        "vo_line": "Steam rises from the V6 machine in every office.",
         "overlay_text": "",
-        "duration_s": 5.0
+        "duration_s": 3.0
       },
       {
-        "vo_line": "The scent of roasted beans fills the air as you pour hot water over the grounds.",
+        "vo_line": "You’ll find it in alleyways, beside temples, and at the end of your commute.",
         "overlay_text": "",
-        "duration_s": 5.0
+        "duration_s": 4.0
       },
       {
-        "vo_line": "You sip slowly, eyes on the city outside your window, coffee in hand.",
+        "vo_line": "The ritual is simple: milk, sugar, and a cup that’s always full.",
         "overlay_text": "",
-        "duration_s": 5.0
+        "duration_s": 4.0
       },
       {
-        "vo_line": "It's the start of your day, your escape, your moment of calm.",
+        "vo_line": "It’s more than a drink—it’s a ritual, a habit, a comfort.",
         "overlay_text": "",
-        "duration_s": 5.0
+        "duration_s": 4.0
       },
       {
-        "vo_line": "Tag your favorite coffee spot and let’s brew some memories.",
+        "vo_line": "Tag your favorite filter coffee spot and let’s brew this city’s secret.",
         "overlay_text": "",
         "duration_s": 4.0
       }
@@ -76,69 +76,69 @@
   },
   "storyboard": {
     "title": "Why Bangalore Loves Filter Coffee",
-    "hook": "You wake up, walk 10 minutes, and the first thing you do is pour yourself a cup of filter coffee. Why?",
+    "hook": "Filter coffee is how Bangalore wakes up.",
     "shots": [
       {
         "id": 1,
-        "duration_s": 4.7,
+        "duration_s": 4.6,
         "shot_type": "image_motion",
-        "visual_prompt": "A young man in a crisp white shirt and black pants walks through the narrow alleys of Koramangala, early morning light casting long shadows on the pavement. He holds a paper bag with a coffee shop logo.",
+        "visual_prompt": "A steaming V6 filter coffee machine in a small Bangalore office kitchen, early morning light streaming through a half-open window, milk froth on the surface, steam rising in slow motion.",
         "camera": "static",
-        "overlay_text": "You wake up, walk 10 minutes, and the first thing you do is pour yourself a cup of filter coffee. Why?",
+        "overlay_text": "Filter coffee is how Bangalore wakes up.",
         "vo_line": ""
       },
       {
         "id": 2,
-        "duration_s": 2.8,
+        "duration_s": 3.5,
         "shot_type": "image_motion",
-        "visual_prompt": "Close-up of a steel pot on a gas stove, steam rising from the opening. The pot is labeled 'Kaveri Coffee' in faded paint.",
+        "visual_prompt": "A young professional in a crisp shirt, holding a white ceramic cup of filter coffee, walking past a glass office door, sunlight reflecting off the cup.",
         "camera": "static",
         "overlay_text": "",
         "vo_line": ""
       },
       {
         "id": 3,
-        "duration_s": 4.7,
+        "duration_s": 3.5,
         "shot_type": "image_motion",
-        "visual_prompt": "A woman in a saree with a patterned blouse stands in a small kitchen, holding a hand grinder. Her hands are steady, the grinder’s motor humming softly.",
+        "visual_prompt": "A close-up of a V6 machine in a tiny alleyway, steam curling up from the spout, a metal tray with a few cups beside it, old and new architecture in the background.",
         "camera": "static",
         "overlay_text": "",
         "vo_line": ""
       },
       {
         "id": 4,
-        "duration_s": 4.7,
+        "duration_s": 4.6,
         "shot_type": "image_motion",
-        "visual_prompt": "A steaming cup of filter coffee sits on a chipped ceramic saucer. The steam rises toward a window where the sun is just beginning to rise over the skyline of Bengaluru.",
+        "visual_prompt": "A shot of a temple gate with a small filter coffee stall beside it, a man in a traditional shawl pouring coffee into a cup, a few customers waiting, the sun setting behind the temple.",
         "camera": "static",
         "overlay_text": "",
         "vo_line": ""
       },
       {
         "id": 5,
-        "duration_s": 4.7,
+        "duration_s": 4.6,
         "shot_type": "image_motion",
-        "visual_prompt": "A student in a hoodie sips coffee from a mug with a 'Coffee for Thought' slogan. He looks out a window at the city, the morning light reflecting on his glasses.",
+        "visual_prompt": "A close-up of a hand adding milk and sugar to a cup, the sugar dissolving in the dark coffee, steam rising, the cup held by a woman in a saree, background showing a bustling street with rickshaws and motorbikes.",
         "camera": "static",
         "overlay_text": "",
         "vo_line": ""
       },
       {
         "id": 6,
-        "duration_s": 4.7,
+        "duration_s": 4.6,
         "shot_type": "image_motion",
-        "visual_prompt": "A close-up of hands pouring hot water over grounds in a filter cone. The water is pouring slowly, the steam rising in soft curls.",
+        "visual_prompt": "A wide shot of a small, dimly lit filter coffee shop in the evening, a few customers sitting at low tables, the air filled with the sound of chatter and the clink of cups, the owner behind the counter.",
         "camera": "static",
         "overlay_text": "",
         "vo_line": ""
       },
       {
         "id": 7,
-        "duration_s": 3.8,
+        "duration_s": 4.6,
         "shot_type": "image_motion",
-        "visual_prompt": "A young professional in a blazer and tie holds a paper cup of filter coffee, standing outside a small shop with a sign that reads 'Coffee Lab' in Kannada and English.",
+        "visual_prompt": "A person sipping from a cup of filter coffee at a corner table, the table cluttered with a laptop, a phone, and a half-eaten biscuit, a fan humming softly in the background.",
         "camera": "static",
-        "overlay_text": "Tag your favorite coffee spot and let’s brew some memories.",
+        "overlay_text": "Tag your favorite filter coffee spot and let’s brew this city’s secret.",
         "vo_line": ""
       }
     ]
