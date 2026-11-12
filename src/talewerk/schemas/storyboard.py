@@ -6,6 +6,7 @@ the error is fed back to the LLM and it tries again (see backends/structured.py)
 
 from __future__ import annotations
 
+import re
 from enum import Enum
 from typing import Literal
 
@@ -27,19 +28,31 @@ class Brief(BaseModel):
     call_to_action: str = Field(description="What the viewer should do at the end")
 
 
+class BriefDraft(BaseModel):
+    """What the LLM fills in. The user's own choices (idea, platform, length) are
+    added in code, so the model cannot get them wrong."""
+
+    audience: str = Field(description="Who the video is for, specific")
+    tone: str = Field(description="Emotional tone, e.g. 'warm and nostalgic'")
+    call_to_action: str = Field(description="What the viewer should do at the end")
+
+
 class Hook(BaseModel):
     """Phase 2: one candidate opening (first 1-3 seconds)."""
 
     hook: str = Field(description="The opening line or visual moment")
     angle: str = Field(description="The creative angle behind it")
-    score: int = Field(ge=1, le=10, description="Self-rated scroll-stopping power")
 
 
 class HookList(BaseModel):
     hooks: list[Hook] = Field(min_length=3, max_length=10)
 
-    def best(self) -> Hook:
-        return max(self.hooks, key=lambda h: h.score)
+
+class HookVerdict(BaseModel):
+    """The judge's decision: a separate LLM call, so the writer never grades itself."""
+
+    best: int = Field(ge=1, description="Number of the best hook (1-based)")
+    reason: str = Field(description="One sentence: why it beats the others")
 
 
 class Beat(BaseModel):
@@ -80,6 +93,14 @@ class Shot(BaseModel):
     vo_line: str = ""
 
 
+# Words that make an image model fail: many scenes in one picture, or text in the
+# picture (image models garble letters; text belongs in overlay_text).
+_BANNED_VISUAL = re.compile(
+    r"\b(montage|collage|split[- ]screen|overlay|caption|hashtag|text that reads)\b|#\w",
+    re.IGNORECASE,
+)
+
+
 class Storyboard(BaseModel):
     title: str
     hook: str
@@ -97,8 +118,29 @@ class Storyboard(BaseModel):
         gen = sum(1 for s in self.shots if s.shot_type == ShotType.GEN_VIDEO)
         if gen > 3:
             raise ValueError(f"at most 3 gen_video shots allowed (got {gen}); use image_motion")
+        for s in self.shots:
+            bad = _BANNED_VISUAL.search(s.visual_prompt)
+            if bad:
+                raise ValueError(
+                    f"shot {s.id}: visual_prompt contains '{bad.group(0)}'. Describe ONE "
+                    "subject in ONE moment, with no text; put any words in overlay_text"
+                )
+        for s in (self.shots[0], self.shots[-1]):
+            if not s.overlay_text.strip():
+                raise ValueError(
+                    f"shot {s.id}: first and last shots need overlay_text "
+                    "(many viewers watch muted)"
+                )
         return self
 
     def fits(self, brief: Brief, tolerance: float = 0.2) -> bool:
         """True if total length is within ±tolerance of the brief's target."""
         return abs(self.total_s - brief.duration_s) <= brief.duration_s * tolerance
+
+    def scaled_to(self, target_s: float) -> Storyboard:
+        """Stretch or shrink every shot by the same factor so the total hits the
+        target. Timing is arithmetic, so it is done in code, not by the LLM."""
+        factor = target_s / self.total_s
+        shots = [s.model_copy(update={"duration_s": round(min(20.0, s.duration_s * factor), 1)})
+                 for s in self.shots]
+        return self.model_copy(update={"shots": shots})

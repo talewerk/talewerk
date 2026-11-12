@@ -3,14 +3,18 @@ so a change in output quality can be traced to the prompt change behind it."""
 
 SYSTEM = (
     "You are the creative director of a short-form video studio. You write for "
-    "social media: strong hooks, clear pacing, concrete visuals, no filler."
+    "social media: strong hooks, clear pacing, concrete visuals, no filler. "
+    "Use specific, local, real-world details (objects, places, rituals, sounds) "
+    "instead of generic ones. Avoid cliches such as 'more than just', 'heartbeat', "
+    "'journey', 'game-changer', 'unlock'."
 )
 
-BRIEF = """Turn this idea into a production brief.
-Idea: {idea}
+BRIEF = """Idea: {idea}
 Platform: {platform}
 Target length: {duration_s} seconds
-Infer a specific audience, a tone, and a one-line call to action."""
+
+Who exactly is this video for, what tone should it have, and what one-line
+call to action should end it?"""
 
 CONCEPT = """Brief:
 {brief}
@@ -18,7 +22,21 @@ CONCEPT = """Brief:
 Write {n} different opening hooks for this video. Each hook is what the viewer sees
 and hears in the first 1-3 seconds and must stop them scrolling. Use different
 angles (surprise, question, bold claim, relatable moment, visual reveal...).
-Score each hook 1-10 honestly for scroll-stopping power."""
+Each hook must name something concrete and specific to this idea."""
+
+JUDGE_SYSTEM = (
+    "You are a strict social media editor. You did not write these hooks. "
+    "You pick the one most likely to stop a real person scrolling. You penalise "
+    "cliches, vague words and hooks that could fit any other video."
+)
+
+JUDGE = """Brief:
+{brief}
+
+Hooks:
+{hooks}
+
+Which hook is best? Reply with its number and one sentence of reasoning."""
 
 SCRIPT = """Brief:
 {brief}
@@ -36,12 +54,17 @@ Script:
 {script}
 
 Turn the script into a storyboard: one or more shots per beat, numbered from 1.
-For each shot write a concrete visual_prompt for an image model (subject, setting,
-lighting, style, composition), a camera move, overlay_text and vo_line.
-shot_type rules: use "image_motion" by default; "kinetic_text" for text-only moments;
-"gen_video" only for at most 2 hero shots where real motion matters.
-Shot durations must add up to about {duration_s} seconds; each shot 1.5-6 seconds."""
+Shot durations must add up to about {duration_s} seconds; each shot 1.5-6 seconds.
 
-STORYBOARD_FIX = """
-Your previous storyboard totalled {total_s:.1f}s but the target is {duration_s}s.
-Adjust shot durations (or add/remove shots) so the total is within 20% of the target."""
+Rules for visual_prompt (it goes to an image model that makes ONE still picture):
+- ONE subject in ONE moment. Never a montage, collage or split screen.
+  If a beat needs several scenes, make several shots.
+- Concrete and specific: real objects, place, light, style, framing.
+  Prefer local, authentic details over generic ones.
+- NO text, letters, logos or hashtags in the picture. Put any words in overlay_text.
+
+Rules for overlay_text (short on-screen words, many viewers watch muted):
+- Required on the first shot (the hook) and the last shot (the call to action).
+
+shot_type: "image_motion" by default; "kinetic_text" for text-only moments;
+"gen_video" only for at most 2 hero shots where real motion matters."""

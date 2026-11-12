@@ -29,10 +29,13 @@ def _plan(args: argparse.Namespace) -> int:
     import openai
 
     from .agent import run_plan
-    from .backends import OpenAICompatLLM, StructuredOutputError
+    from .backends import OllamaError, OllamaLLM, OpenAICompatLLM, StructuredOutputError
 
     logging.basicConfig(level=logging.WARNING, format="  ! %(message)s")
-    llm = OpenAICompatLLM(model=args.model, base_url=args.llm_url)
+    if args.backend == "ollama":
+        llm = OllamaLLM(model=args.model, base_url=args.llm_url)
+    else:
+        llm = OpenAICompatLLM(model=args.model, base_url=args.llm_url)
     start = time.monotonic()
 
     def say(msg: str) -> None:
@@ -45,10 +48,14 @@ def _plan(args: argparse.Namespace) -> int:
     except StructuredOutputError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
-    except openai.APIConnectionError:
+    except (openai.APIConnectionError, ConnectionError):
         print(f"error: cannot reach the LLM server at {args.llm_url}\n"
               "  Is Ollama running? Try: brew services start ollama, then talewerk doctor",
               file=sys.stderr)
+        return 3
+    except OllamaError as exc:
+        hint = f"\n  Try: ollama pull {args.model}" if "not found" in str(exc) else ""
+        print(f"error: {exc}{hint}", file=sys.stderr)
         return 3
     except openai.NotFoundError:
         print(f"error: model '{args.model}' not found on the server.\n"
@@ -59,6 +66,7 @@ def _plan(args: argparse.Namespace) -> int:
     result = {
         "brief": brief.model_dump(),
         "hooks": [h.model_dump() for h in state["hooks"]],
+        "chosen_hook": {"hook": state["hook"].hook, "reason": state.get("hook_reason", "")},
         "script": state["script"].model_dump(),
         "storyboard": sb.model_dump(mode="json"),
     }
@@ -99,9 +107,12 @@ def build_parser() -> argparse.ArgumentParser:
     plan.add_argument("--duration", type=int, default=30, help="target seconds (default 30)")
     plan.add_argument("--platform", default="instagram",
                       choices=["instagram", "youtube_shorts", "tiktok", "youtube"])
+    plan.add_argument("--backend", default="ollama", choices=["ollama", "openai"],
+                      help="ollama = native API, fast + schema-forced JSON (default); "
+                           "openai = any OpenAI-compatible server")
     plan.add_argument("--model", default=None, help="LLM model (default: $TALEWERK_MODEL or qwen3:8b)")
     plan.add_argument("--llm-url", default=None,
-                      help="OpenAI-compatible base URL (default: $TALEWERK_LLM_URL or Ollama)")
+                      help="server URL (default: Ollama on localhost)")
     plan.add_argument("-o", "--out", default="storyboard.json", help="output file")
     plan.set_defaults(func=_plan)
     return parser
@@ -114,10 +125,11 @@ def main(argv: list[str] | None = None) -> int:
         parser.print_help()
         return 0
     if args.command == "plan":
+        from .backends.ollama import DEFAULT_URL as OLLAMA_URL
         from .backends.openai_compat import DEFAULT_MODEL, DEFAULT_URL
 
         args.model = args.model or DEFAULT_MODEL
-        args.llm_url = args.llm_url or DEFAULT_URL
+        args.llm_url = args.llm_url or (OLLAMA_URL if args.backend == "ollama" else DEFAULT_URL)
     return args.func(args)
 
 

@@ -35,7 +35,10 @@ class OpenAICompatLLM:
         # much faster for structured planning tasks.
         self._no_think = model.lower().startswith("qwen3")
 
-    def complete(self, system: str, user: str, *, json_mode: bool = False) -> str:
+    def complete(
+        self, system: str, user: str, *, json_mode: bool = False,
+        temperature: float | None = None,
+    ) -> str:
         if self._no_think:
             user = user + "\n/no_think"
         kwargs = {}
@@ -43,7 +46,7 @@ class OpenAICompatLLM:
             kwargs["response_format"] = {"type": "json_object"}
         resp = self._client.chat.completions.create(
             model=self.model,
-            temperature=self.temperature,
+            temperature=self.temperature if temperature is None else temperature,
             messages=[{"role": "system", "content": system}, {"role": "user", "content": user}],
             **kwargs,
         )

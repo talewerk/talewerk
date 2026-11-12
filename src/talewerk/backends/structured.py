@@ -38,6 +38,43 @@ def extract_json(text: str) -> str:
     return text[start : end + 1]
 
 
+def inline_refs(schema: dict) -> dict:
+    """Replace every {"$ref": "#/$defs/X"} with the definition itself.
+    Nested Pydantic models produce $refs; inlined schemas work with more backends."""
+    defs = schema.get("$defs", {})
+
+    def walk(node):
+        if isinstance(node, dict):
+            if "$ref" in node:
+                return walk(defs[node["$ref"].split("/")[-1]])
+            return {k: walk(v) for k, v in node.items() if k != "$defs"}
+        if isinstance(node, list):
+            return [walk(x) for x in node]
+        return node
+
+    return walk(schema)
+
+
+def _field_guide(schema: dict) -> str:
+    """Short 'name: description' list of top-level fields, easier for small models
+    than a full JSON Schema."""
+    lines = []
+    for name, prop in schema.get("properties", {}).items():
+        desc = prop.get("description", "")
+        lines.append(f"- {name}" + (f": {desc}" if desc else ""))
+    return "\n".join(lines)
+
+
+def _short_error(exc: Exception) -> str:
+    if isinstance(exc, ValidationError):
+        parts = []
+        for e in exc.errors()[:3]:
+            loc = ".".join(str(x) for x in e["loc"]) or "(root)"
+            parts.append(f"{loc}: {e['msg']}")
+        return "; ".join(parts)
+    return str(exc).splitlines()[0]
+
+
 def generate_structured(
     llm: LLMBackend,
     system: str,
@@ -45,24 +82,33 @@ def generate_structured(
     model_cls: type[T],
     *,
     retries: int = 2,
+    temperature: float | None = None,
 ) -> T:
-    schema = json.dumps(model_cls.model_json_schema(), indent=None)
-    sys_prompt = (
-        f"{system}\n\nReply with ONE JSON object only, no prose, matching this JSON Schema:\n"
-        f"{schema}"
-    )
+    schema = model_cls.model_json_schema()
+    native = getattr(llm, "supports_schema", False)
+    if native:
+        # The backend forces the JSON shape, so the prompt only explains the fields.
+        sys_prompt = f"{system}\n\nReply in JSON with these fields:\n{_field_guide(schema)}"
+    else:
+        sys_prompt = (
+            f"{system}\n\nReply with ONE JSON object only, no prose, matching this JSON Schema:\n"
+            f"{json.dumps(schema)}"
+        )
     prompt = user
     last_error = ""
     for attempt in range(retries + 1):
-        raw = llm.complete(sys_prompt, prompt, json_mode=True)
+        kwargs = {"json_mode": True, "temperature": temperature}
+        if native:
+            kwargs["schema"] = inline_refs(schema)
+        raw = llm.complete(sys_prompt, prompt, **kwargs)
         try:
             return model_cls.model_validate_json(extract_json(raw))
         except (ValueError, ValidationError) as exc:
-            last_error = str(exc)
+            last_error = _short_error(exc)
             log.warning("attempt %d/%d invalid %s: %s", attempt + 1, retries + 1,
-                        model_cls.__name__, last_error.splitlines()[0])
+                        model_cls.__name__, last_error)
             prompt = (
-                f"{user}\n\nYour previous reply was invalid:\n{last_error}\n"
+                f"{user}\n\nYour previous reply was invalid: {last_error}\n"
                 f"Previous reply:\n{raw[:2000]}\n\nReturn a corrected JSON object."
             )
     raise StructuredOutputError(
