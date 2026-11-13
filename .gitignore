@@ -10,6 +10,8 @@ build/
 
 # Generated media and model weights (large, reproducible)
 projects/
+out/
+storyboard.json
 models/
 *.mp4
 *.wav

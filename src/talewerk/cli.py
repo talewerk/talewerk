@@ -86,6 +86,73 @@ def _plan(args: argparse.Namespace) -> int:
     return 0
 
 
+def _render(args: argparse.Namespace) -> int:
+    from pydantic import ValidationError
+
+    from .backends.image_mflux import ImageBackendError, MfluxImage
+    from .render import load_storyboard, render_images
+
+    start = time.monotonic()
+
+    def say(msg: str) -> None:
+        print(f"[{time.monotonic() - start:6.1f}s] {msg}", file=sys.stderr)
+
+    src = Path(args.storyboard)
+    if not src.exists():
+        print(f"error: {src} not found. Run `talewerk plan \"your idea\"` first.", file=sys.stderr)
+        return 2
+    try:
+        sb = load_storyboard(src)
+        backend = MfluxImage(preset=args.image_model, quantize=args.quantize, steps=args.steps)
+        say(f"rendering {len(sb.shots)} shots with {backend.name} at {args.width}x{args.height}")
+        manifest = render_images(sb, backend, Path(args.out), width=args.width,
+                                 height=args.height, seed=args.seed, style=args.style,
+                                 force=args.force, limit=args.limit, progress=say)
+    except ValidationError as exc:
+        print(f"error: {src} is not a valid storyboard: {exc.errors()[0]['msg']}", file=sys.stderr)
+        return 2
+    except ImageBackendError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 3
+    made = sum(1 for m in manifest if m["status"] == "generated")
+    print(f"\n{made} image(s) generated, {len(manifest) - made} skipped. "
+          f"Open: {Path(args.out) / 'images'}")
+    return 0
+
+
+def _video(args: argparse.Namespace) -> int:
+    from pydantic import ValidationError
+
+    from .assemble import AssembleError, assemble_video, probe_duration
+    from .backends.tts_say import SayTTS, TTSError
+    from .render import load_storyboard
+
+    start = time.monotonic()
+
+    def say(msg: str) -> None:
+        print(f"[{time.monotonic() - start:6.1f}s] {msg}", file=sys.stderr)
+
+    src = Path(args.storyboard)
+    if not src.exists():
+        print(f"error: {src} not found. Run `talewerk plan \"your idea\"` first.", file=sys.stderr)
+        return 2
+    tts = None if args.voice == "none" else SayTTS(voice=args.voice_name, rate=args.rate)
+    try:
+        sb = load_storyboard(src)
+        say(f"building video from {len(sb.shots)} shots, voice: {tts.name if tts else 'none'}")
+        final = assemble_video(sb, Path(args.out), tts=tts, width=args.width, height=args.height,
+                               fps=args.fps, subtitles=not args.no_subtitles, progress=say)
+        seconds = probe_duration(final)
+    except ValidationError as exc:
+        print(f"error: {src} is not a valid storyboard: {exc.errors()[0]['msg']}", file=sys.stderr)
+        return 2
+    except (AssembleError, TTSError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 3
+    print(f"\nVideo ready: {final}  ({seconds:.1f}s)\nOpen it with: open {final}")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="talewerk",
@@ -115,6 +182,36 @@ def build_parser() -> argparse.ArgumentParser:
                       help="server URL (default: Ollama on localhost)")
     plan.add_argument("-o", "--out", default="storyboard.json", help="output file")
     plan.set_defaults(func=_plan)
+
+    render = sub.add_parser("render", help="storyboard.json -> one image per shot (FLUX via mflux)")
+    render.add_argument("storyboard", nargs="?", default="storyboard.json")
+    render.add_argument("-o", "--out", default="out", help="output folder (default: out)")
+    render.add_argument("--image-model", default="klein", choices=["klein", "schnell"],
+                        help="klein = FLUX.2 klein 4B (default, smaller); schnell = FLUX.1 schnell")
+    render.add_argument("--quantize", type=int, default=8, choices=[4, 8],
+                        help="8 = better quality (default), 4 = less memory")
+    render.add_argument("--steps", type=int, default=None, help="denoising steps (default: preset)")
+    render.add_argument("--width", type=int, default=720)
+    render.add_argument("--height", type=int, default=1280)
+    render.add_argument("--seed", type=int, default=7, help="same seed = same images")
+    render.add_argument("--style", default=None, help="style words added to every shot")
+    render.add_argument("--limit", type=int, default=None, help="only the first N shots (for testing)")
+    render.add_argument("--force", action="store_true", help="regenerate images that already exist")
+    render.set_defaults(func=_render)
+
+    video = sub.add_parser("video", help="images + voice + text -> out/video.mp4")
+    video.add_argument("storyboard", nargs="?", default="storyboard.json")
+    video.add_argument("-o", "--out", default="out", help="folder that holds images/ (default: out)")
+    video.add_argument("--voice", default="say", choices=["say", "none"],
+                       help="say = the Mac's built-in voice (default); none = silent video")
+    video.add_argument("--voice-name", default=None,
+                       help="a voice from `say -v '?'`, e.g. Rishi (Indian English)")
+    video.add_argument("--rate", type=int, default=None, help="speaking speed in words per minute")
+    video.add_argument("--no-subtitles", action="store_true", help="do not show the voice lines")
+    video.add_argument("--width", type=int, default=720)
+    video.add_argument("--height", type=int, default=1280)
+    video.add_argument("--fps", type=int, default=30)
+    video.set_defaults(func=_video)
     return parser
 
 
@@ -124,6 +221,10 @@ def main(argv: list[str] | None = None) -> int:
     if not hasattr(args, "func"):
         parser.print_help()
         return 0
+    if args.command == "render" and args.style is None:
+        from .render import DEFAULT_STYLE
+
+        args.style = DEFAULT_STYLE
     if args.command == "plan":
         from .backends.ollama import DEFAULT_URL as OLLAMA_URL
         from .backends.openai_compat import DEFAULT_MODEL, DEFAULT_URL

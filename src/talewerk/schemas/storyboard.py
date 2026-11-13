@@ -152,6 +152,21 @@ class Storyboard(BaseModel):
         """True if total length is within ±tolerance of the brief's target."""
         return abs(self.total_s - brief.duration_s) <= brief.duration_s * tolerance
 
+    def with_voice_from(self, script: Script) -> Storyboard:
+        """If the model left every vo_line empty, spread the script's lines over
+        the shots in order. A video without its voice lines is not usable."""
+        if any(s.vo_line.strip() for s in self.shots):
+            return self
+        lines = [b.vo_line.strip() for b in script.beats if b.vo_line.strip()]
+        if not lines:
+            return self
+        slots: dict[int, list[str]] = {}
+        for j, line in enumerate(lines):
+            slots.setdefault(j * len(self.shots) // len(lines), []).append(line)
+        shots = [s.model_copy(update={"vo_line": " ".join(slots.get(i, []))})
+                 for i, s in enumerate(self.shots)]
+        return self.model_copy(update={"shots": shots})
+
     def scaled_to(self, target_s: float) -> Storyboard:
         """Stretch or shrink every shot by the same factor so the total hits the
         target. Timing is arithmetic, so it is done in code, not by the LLM."""

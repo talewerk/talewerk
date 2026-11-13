@@ -89,7 +89,8 @@ def build_plan_graph(llm: LLMBackend, progress: Progress | None = None):
         )
         sb = generate_structured(llm, prompts.SYSTEM, user, Storyboard)
         # The hook was already chosen by the judge; do not let this step reword it.
-        return {"storyboard": sb.model_copy(update={"hook": s["hook"].hook})}
+        sb = sb.model_copy(update={"hook": s["hook"].hook})
+        return {"storyboard": sb.with_voice_from(s["script"])}
 
     def fit_node(s: PlanState) -> PlanState:
         """Fix the total length in code: no extra LLM call needed."""

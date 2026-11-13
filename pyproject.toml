@@ -27,6 +27,7 @@ classifiers = [
 dependencies = [
     "langgraph>=0.6",
     "openai>=1.40",
+    "pillow>=10.1",
     "pydantic>=2.7",
 ]
 

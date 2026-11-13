@@ -64,5 +64,11 @@ def check_llm(base_url: str = DEFAULT_LLM_URL, timeout: float = 3.0) -> Check:
         )
 
 
+def check_mflux() -> Check:
+    path = shutil.which("mflux-generate")
+    detail = path or "not found (for images: uv tool install --upgrade mflux)"
+    return Check("mflux (image generation)", path is not None, detail, required=False)
+
+
 def run_checks(llm_url: str = DEFAULT_LLM_URL) -> list[Check]:
-    return [check_python(), check_ffmpeg(), check_platform(), check_llm(llm_url)]
+    return [check_python(), check_ffmpeg(), check_platform(), check_llm(llm_url), check_mflux()]

@@ -65,6 +65,10 @@ Rules for visual_prompt (it goes to an image model that makes ONE still picture)
 - NO text in the picture: no signs with words, labels, logos, slogans, hashtags
   or quoted words. Put any words in overlay_text.
 
+Rules for vo_line (the spoken words):
+- Copy each script beat's vo_line onto the first shot of that beat, word for word.
+  Every voiceover line of the script must appear in exactly one shot.
+
 Rules for overlay_text (short on-screen words, many viewers watch muted):
 - Required on the first shot (the hook) and the last shot (the call to action).
 

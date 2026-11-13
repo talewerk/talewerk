@@ -6,7 +6,7 @@
     "duration_s": 30,
     "audience": "Young professionals and expats in Bangalore who drink filter coffee daily",
     "tone": "playful and authentic",
-    "call_to_action": "Tag your favorite filter coffee spot and let’s brew this city’s secret"
+    "call_to_action": "Tag your favourite filter coffee spot"
   },
   "hooks": [
     {
@@ -43,32 +43,32 @@
         "duration_s": 4.0
       },
       {
-        "vo_line": "It’s the first thing you order at 7 a.m.",
+        "vo_line": "It is the first order at every Darshini.",
         "overlay_text": "",
         "duration_s": 3.0
       },
       {
-        "vo_line": "Steam rises from the V6 machine in every office.",
+        "vo_line": "Poured high, from tumbler to davara.",
         "overlay_text": "",
         "duration_s": 3.0
       },
       {
-        "vo_line": "You’ll find it in alleyways, beside temples, and at the end of your commute.",
+        "vo_line": "Outside temples, on street corners, after the commute.",
         "overlay_text": "",
         "duration_s": 4.0
       },
       {
-        "vo_line": "The ritual is simple: milk, sugar, and a cup that’s always full.",
+        "vo_line": "Strong decoction, hot milk, sugar. Nothing else.",
         "overlay_text": "",
         "duration_s": 4.0
       },
       {
-        "vo_line": "It’s more than a drink—it’s a ritual, a habit, a comfort.",
+        "vo_line": "Friends meet over it. Deals get done over it.",
         "overlay_text": "",
         "duration_s": 4.0
       },
       {
-        "vo_line": "Tag your favorite filter coffee spot and let’s brew this city’s secret.",
+        "vo_line": "Tag your favourite filter coffee spot.",
         "overlay_text": "",
         "duration_s": 4.0
       }
@@ -82,64 +82,64 @@
         "id": 1,
         "duration_s": 4.6,
         "shot_type": "image_motion",
-        "visual_prompt": "A steaming V6 filter coffee machine in a small Bangalore office kitchen, early morning light streaming through a half-open window, milk froth on the surface, steam rising in slow motion.",
+        "visual_prompt": "Frothy South Indian filter coffee in a small stainless steel tumbler sitting inside a steel davara bowl, on a worn wooden table in a Bangalore kitchen, early morning window light, steam rising.",
         "camera": "static",
         "overlay_text": "Filter coffee is how Bangalore wakes up.",
-        "vo_line": ""
+        "vo_line": "Filter coffee is how Bangalore wakes up."
       },
       {
         "id": 2,
         "duration_s": 3.5,
         "shot_type": "image_motion",
-        "visual_prompt": "A young professional in a crisp shirt, holding a white ceramic cup of filter coffee, walking past a glass office door, sunlight reflecting off the cup.",
+        "visual_prompt": "A man in a checked shirt standing at the steel counter of a busy Bangalore darshini eatery at 7 in the morning, holding a small steel tumbler of frothy filter coffee, other customers blurred behind, soft morning light.",
         "camera": "static",
         "overlay_text": "",
-        "vo_line": ""
+        "vo_line": "It is the first order at every Darshini."
       },
       {
         "id": 3,
         "duration_s": 3.5,
         "shot_type": "image_motion",
-        "visual_prompt": "A close-up of a V6 machine in a tiny alleyway, steam curling up from the spout, a metal tray with a few cups beside it, old and new architecture in the background.",
+        "visual_prompt": "Close-up of hands pouring frothy filter coffee in a long stream from a steel tumbler held high into a steel davara bowl below, coffee stall counter behind, warm morning light.",
         "camera": "static",
         "overlay_text": "",
-        "vo_line": ""
+        "vo_line": "Poured high, from tumbler to davara."
       },
       {
         "id": 4,
         "duration_s": 4.6,
         "shot_type": "image_motion",
-        "visual_prompt": "A shot of a temple gate with a small filter coffee stall beside it, a man in a traditional shawl pouring coffee into a cup, a few customers waiting, the sun setting behind the temple.",
+        "visual_prompt": "A small roadside coffee stall beside a carved stone South Indian temple gateway, a vendor in a white dhoti handing a steel tumbler of coffee to a customer, golden early morning light.",
         "camera": "static",
         "overlay_text": "",
-        "vo_line": ""
+        "vo_line": "Outside temples, on street corners, after the commute."
       },
       {
         "id": 5,
         "duration_s": 4.6,
         "shot_type": "image_motion",
-        "visual_prompt": "A close-up of a hand adding milk and sugar to a cup, the sugar dissolving in the dark coffee, steam rising, the cup held by a woman in a saree, background showing a bustling street with rickshaws and motorbikes.",
+        "visual_prompt": "Close-up of hot milk being poured from a small steel pot into a stainless steel tumbler of dark coffee, on a granite kitchen counter, steam rising, warm morning light.",
         "camera": "static",
         "overlay_text": "",
-        "vo_line": ""
+        "vo_line": "Strong decoction, hot milk, sugar. Nothing else."
       },
       {
         "id": 6,
         "duration_s": 4.6,
         "shot_type": "image_motion",
-        "visual_prompt": "A wide shot of a small, dimly lit filter coffee shop in the evening, a few customers sitting at low tables, the air filled with the sound of chatter and the clink of cups, the owner behind the counter.",
+        "visual_prompt": "Two friends laughing at a steel-topped table in an old Bangalore coffee house, two steel tumblers in davara bowls between them, ceiling fan above, warm evening light.",
         "camera": "static",
         "overlay_text": "",
-        "vo_line": ""
+        "vo_line": "Friends meet over it. Deals get done over it."
       },
       {
         "id": 7,
         "duration_s": 4.6,
         "shot_type": "image_motion",
-        "visual_prompt": "A person sipping from a cup of filter coffee at a corner table, the table cluttered with a laptop, a phone, and a half-eaten biscuit, a fan humming softly in the background.",
+        "visual_prompt": "Close-up portrait of a young woman smiling and holding up a small straight-sided stainless steel tumbler of frothy milky brown filter coffee, plain yellow painted wall behind her, bright morning light, shallow depth of field.",
         "camera": "static",
-        "overlay_text": "Tag your favorite filter coffee spot and let’s brew this city’s secret.",
-        "vo_line": ""
+        "overlay_text": "Tag your filter coffee spot",
+        "vo_line": "Tag your favourite filter coffee spot."
       }
     ]
   }
